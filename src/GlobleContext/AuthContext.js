@@ -1,4 +1,5 @@
 import { createContext, useReducer, useContext, useEffect } from "react";
+
 export const AuthContext = createContext();
 
 export const authReducer = (state, action) => {
@@ -15,14 +16,22 @@ export const authReducer = (state, action) => {
 export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, { BookUser: null });
 
+  // Initialize BookUser from localStorage
   useEffect(() => {
-    const BookUser = JSON.parse(localStorage.getItem("BookUser"));
-    console.log(BookUser);
-
-    if (BookUser) {
-      dispatch({ type: "LOGIN", payload: BookUser });
+    const storedUser = JSON.parse(localStorage.getItem("BookUser"));
+    if (storedUser) {
+      dispatch({ type: "LOGIN", payload: storedUser });
     }
   }, []);
+
+  // Update localStorage whenever BookUser changes
+  useEffect(() => {
+    if (state.BookUser) {
+      localStorage.setItem("BookUser", JSON.stringify(state.BookUser));
+    } else {
+      localStorage.removeItem("BookUser");
+    }
+  }, [state.BookUser]);
 
   console.log("AuthContext state: ", state);
 
