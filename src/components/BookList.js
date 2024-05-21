@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuthContext } from "../GlobleContext/AuthContext";
 import { useNavigate } from "react-router-dom";
-// import toast from "react-hot-toast";
 
 const BookList = () => {
   const navigate = useNavigate();
@@ -10,37 +9,42 @@ const BookList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const { BookUser } = useAuthContext();
 
   useEffect(() => {
     const fetchBooks = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `/books?page=${currentPage}&limit=10`,
-          {
-            headers: {
-              Authorization: `Bearer ${BookUser?.token}`,
-            },
-          }
-        );
-        console.log(response.data);
-        setBooks(response.data.books);
-        setTotalPages(response.data.totalPages);
-      } catch (error) {
-        // toast.error(error.message);
-        console.log("Error: ", error);
-      } finally {
-        setLoading(false);
+      if (BookUser?.token) {
+        setLoading(true);
+        setError(null);
+        console.log("Fetching books with token:", BookUser.token);
+        try {
+          const response = await axios.get(
+            `/books?page=${currentPage}&limit=10`,
+            {
+              headers: {
+                Authorization: `Bearer ${BookUser?.token}`,
+              },
+            }
+          );
+          setBooks(response.data.books);
+          setTotalPages(response.data.totalPages);
+        } catch (error) {
+          console.error("Error fetching books:", error);
+          setError(
+            error.response
+              ? error.response.data.error
+              : "An unexpected error occurred"
+          );
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        console.log("No token found, skipping book fetch");
       }
     };
 
-    if (BookUser) {
-      console.log("user Exist now i send request");
-      // fetchBooks();
-    } else {
-      console.log("user not exist");
-    }
+    fetchBooks();
   }, [currentPage, BookUser]);
 
   const handlePageChange = (page) => {
@@ -52,6 +56,7 @@ const BookList = () => {
       <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 text-center text-indigo-600">
         Book List
       </h1>
+      {error && <div className="text-red-500 mb-4 text-center">{error}</div>}
       {loading ? (
         <div className="space-y-4">
           {[...Array(10)].map((_, index) => (
