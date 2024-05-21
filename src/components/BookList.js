@@ -14,29 +14,29 @@ const BookList = () => {
 
   useEffect(() => {
     const fetchBooks = async () => {
-      if (BookUser?.token) {
-        setLoading(true);
-        try {
-          const response = await axios.get(
-            `/books?page=${currentPage}&limit=10`,
-            {
-              headers: {
-                Authorization: `Bearer ${BookUser?.token}`,
-              },
-            }
-          );
-          setBooks(response.data.books);
-          setTotalPages(response.data.totalPages);
-        } catch (error) {
-          // toast.error(error.message);
-          console.error("Error: ", error.message);
-        } finally {
-          setLoading(false);
-        }
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `/books?page=${currentPage}&limit=10`,
+          {
+            headers: {
+              Authorization: `Bearer ${BookUser?.token}`,
+            },
+          }
+        );
+        setBooks(response.data.books);
+        setTotalPages(response.data.totalPages);
+      } catch (error) {
+        // toast.error(error.message);
+        console.error("Error: ", error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchBooks();
+    if (BookUser) {
+      fetchBooks();
+    }
   }, [currentPage, BookUser?.token]);
 
   const handlePageChange = (page) => {
