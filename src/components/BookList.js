@@ -37,7 +37,7 @@ const BookList = () => {
     };
 
     fetchBooks();
-  }, [currentPage, BookUser]);
+  }, [currentPage, BookUser?.token]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
