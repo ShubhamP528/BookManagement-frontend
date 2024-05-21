@@ -24,20 +24,22 @@ const BookList = () => {
             },
           }
         );
+        console.log(response.data);
         setBooks(response.data.books);
         setTotalPages(response.data.totalPages);
       } catch (error) {
         // toast.error(error.message);
-        console.error("Error: ", error.message);
+        console.log("Error: ", error);
       } finally {
         setLoading(false);
       }
     };
 
     if (BookUser) {
+      console.log("user Exist now i send request");
       fetchBooks();
     }
-  }, [currentPage, BookUser?.token]);
+  }, [currentPage, BookUser]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
