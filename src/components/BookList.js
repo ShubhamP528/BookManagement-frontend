@@ -13,8 +13,8 @@ const BookList = () => {
   const { BookUser } = useAuthContext();
 
   useEffect(() => {
-    setLoading(true);
     if (BookUser?.token) {
+      setLoading(true);
       axios
         .get(`/books?page=${currentPage}&limit=10`, {
           headers: {
@@ -28,7 +28,7 @@ const BookList = () => {
         })
         .catch((error) => {
           // toast.error(error.message);
-          // console.log(error);
+          console.log(error);
           // console.log("Error: " + error.message);
           setLoading(false);
         });
