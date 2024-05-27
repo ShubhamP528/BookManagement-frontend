@@ -59,7 +59,7 @@ const BookList = () => {
       {error && <div className="text-red-500 mb-4 text-center">{error}</div>}
       {loading ? (
         <div className="space-y-4">
-          {[...Array(10)].map((_, index) => (
+          {[...Array(1)].map((_, index) => (
             <Shimmer key={index} />
           ))}
         </div>
@@ -167,7 +167,7 @@ const Shimmer = () => {
         <button className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50 transition duration-200 ease-in-out animate-pulse">
           Previous
         </button>
-        {[...Array(5)].map((_, index) => (
+        {[...Array(3)].map((_, index) => (
           <button
             key={index}
             className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50 transition duration-200 ease-in-out animate-pulse"
