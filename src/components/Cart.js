@@ -18,7 +18,7 @@ const CartPage = () => {
   const handleRemoveItem = async (item) => {
     axios
       .put(
-        `https://book-management-backend-psi.vercel.app/cart/${item.book._id}`,
+        `/api/cart/${item.book._id}`,
         {},
         {
           headers: {
@@ -44,7 +44,7 @@ const CartPage = () => {
     );
 
     const response = await axios.post(
-      "https://book-management-backend-psi.vercel.app/craete-checkout-session",
+      "/api/craete-checkout-session",
       { products: cartItems },
       { headers: { "Content-Type": "application/json" } }
     );
@@ -62,7 +62,7 @@ const CartPage = () => {
 
   const handleClearCart = async () => {
     axios
-      .delete("https://book-management-backend-psi.vercel.app/cart", {
+      .delete("/api/cart", {
         headers: {
           Authorization: `Bearer ${BookUser?.token}`,
         },

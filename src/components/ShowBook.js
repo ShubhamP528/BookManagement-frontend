@@ -17,7 +17,7 @@ const ShowBook = () => {
   useEffect(() => {
     if (BookUser) {
       axios
-        .get(`https://book-management-backend-psi.vercel.app/books/${id}`, {
+        .get(`/api/books/${id}`, {
           headers: {
             Authorization: `Bearer ${BookUser?.token}`,
           },
@@ -35,7 +35,7 @@ const ShowBook = () => {
 
   const handleDelete = () => {
     axios
-      .delete(`https://book-management-backend-psi.vercel.app/books/${id}`, {
+      .delete(`/api/books/${id}`, {
         headers: {
           Authorization: `Bearer ${BookUser?.token}`,
         },
@@ -57,7 +57,7 @@ const ShowBook = () => {
   const handleAddToCart = async () => {
     axios
       .post(
-        `https://book-management-backend-psi.vercel.app/cart/${book?._id}`,
+        `/api/cart/${book?._id}`,
         {},
         {
           headers: {

@@ -20,7 +20,7 @@ const AddBook = () => {
       .then((response) => {
         console.log(response);
         if (response.status === 201) {
-          navigate("https://book-management-backend-psi.vercel.app/books/");
+          navigate("/api/books/");
           toast.success(response.data.title + " Added");
         }
       })

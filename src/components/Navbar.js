@@ -23,7 +23,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchCartItems = async () => {
       await axios
-        .get("https://book-management-backend-psi.vercel.app/cart", {
+        .get("/api/cart", {
           headers: {
             Authorization: `Bearer ${BookUser?.token}`,
           },

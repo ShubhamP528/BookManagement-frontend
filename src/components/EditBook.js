@@ -15,7 +15,7 @@ const EditBook = () => {
   useEffect(() => {
     if (BookUser) {
       axios
-        .get(`https://book-management-backend-psi.vercel.app/books/${id}`, {
+        .get(`/api/books/${id}`, {
           headers: {
             Authorization: `Bearer ${BookUser?.token}`,
           },
@@ -30,15 +30,11 @@ const EditBook = () => {
 
   const handleSave = (bookData) => {
     axios
-      .put(
-        `https://book-management-backend-psi.vercel.app/books/${id}`,
-        bookData,
-        {
-          headers: {
-            Authorization: `Bearer ${BookUser?.token}`,
-          },
-        }
-      )
+      .put(`/api/books/${id}`, bookData, {
+        headers: {
+          Authorization: `Bearer ${BookUser?.token}`,
+        },
+      })
       .then((response) => {
         console.log(response);
         if (response.status === 200) {

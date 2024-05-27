@@ -20,7 +20,7 @@ const BookList = () => {
         console.log("Fetching books with token:", BookUser.token);
         try {
           const response = await axios.get(
-            `https://book-management-backend-psi.vercel.app/books?page=${currentPage}&limit=10`,
+            `/api/books?page=${currentPage}&limit=10`,
             {
               headers: {
                 Authorization: `Bearer ${BookUser?.token}`,
