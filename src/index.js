@@ -28,14 +28,14 @@ import OrderSummary from "./components/Order";
 const Applayout = () => {
   return (
     <>
-      <Provider store={store}>
-        <AuthContextProvider>
+      <AuthContextProvider>
+        <Provider store={store}>
           <Navbar />
           <Outlet />
           <Toaster />
           <Footer />
-        </AuthContextProvider>
-      </Provider>
+        </Provider>
+      </AuthContextProvider>
     </>
   );
 };

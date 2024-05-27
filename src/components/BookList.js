@@ -20,7 +20,7 @@ const BookList = () => {
         console.log("Fetching books with token:", BookUser.token);
         try {
           const response = await axios.get(
-            `/books?page=${currentPage}&limit=10`,
+            `https://book-management-backend-psi.vercel.app/books?page=${currentPage}&limit=10`,
             {
               headers: {
                 Authorization: `Bearer ${BookUser?.token}`,
@@ -43,8 +43,9 @@ const BookList = () => {
         console.log("No token found, skipping book fetch");
       }
     };
-
-    fetchBooks();
+    if (BookUser) {
+      fetchBooks();
+    }
   }, [currentPage, BookUser]);
 
   const handlePageChange = (page) => {

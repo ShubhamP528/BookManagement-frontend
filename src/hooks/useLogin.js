@@ -14,11 +14,14 @@ export const useLogin = () => {
     setIsLoadingL(true);
     setErrorL(null);
 
-    const response = await fetch("/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    const response = await fetch(
+      "https://book-management-backend-psi.vercel.app/login",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      }
+    );
 
     const json = await response.json();
 

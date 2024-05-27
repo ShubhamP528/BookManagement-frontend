@@ -26,11 +26,14 @@ const PaymentSuccess = () => {
       console.log(totalPrice);
 
       try {
-        await axios.delete(`/payment-success/${totalPrice}`, {
-          headers: {
-            Authorization: `Bearer ${BookUser?.token}`,
-          },
-        });
+        await axios.delete(
+          `https://book-management-backend-psi.vercel.app/payment-success/${totalPrice}`,
+          {
+            headers: {
+              Authorization: `Bearer ${BookUser?.token}`,
+            },
+          }
+        );
         toast.success("Order successfully done");
         dispatch(clearCart());
       } catch (error) {

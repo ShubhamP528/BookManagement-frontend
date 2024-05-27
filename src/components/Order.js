@@ -12,11 +12,14 @@ const OrderSummary = () => {
   useEffect(() => {
     if (BookUser?.token) {
       axios
-        .get(`/order/${orderId}`, {
-          headers: {
-            Authorization: `Bearer ${BookUser?.token}`,
-          },
-        })
+        .get(
+          `https://book-management-backend-psi.vercel.app/order/${orderId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${BookUser?.token}`,
+            },
+          }
+        )
         .then((response) => {
           setOrder(response.data);
           setLoading(false);
@@ -30,12 +33,15 @@ const OrderSummary = () => {
 
   const handleDownload = async () => {
     try {
-      const response = await axios.get(`/order/${orderId}/download`, {
-        headers: {
-          Authorization: `Bearer ${BookUser?.token}`,
-        },
-        responseType: "blob", // Important
-      });
+      const response = await axios.get(
+        `https://book-management-backend-psi.vercel.app/order/${orderId}/download`,
+        {
+          headers: {
+            Authorization: `Bearer ${BookUser?.token}`,
+          },
+          responseType: "blob", // Important
+        }
+      );
 
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
