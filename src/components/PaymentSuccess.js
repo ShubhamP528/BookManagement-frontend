@@ -26,7 +26,7 @@ const PaymentSuccess = () => {
       console.log(totalPrice);
 
       try {
-        const response = await axios.delete(`/payment-success/${totalPrice}`, {
+        await axios.delete(`/payment-success/${totalPrice}`, {
           headers: {
             Authorization: `Bearer ${BookUser?.token}`,
           },

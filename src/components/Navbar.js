@@ -17,7 +17,6 @@ const Navbar = () => {
   const dispatch = useDispatch();
 
   const cartItems = useSelector((store) => store.cart.items);
-  const load = useSelector((store) => store.cartloader.loading);
 
   // console.log(cartItems);
 
@@ -32,10 +31,8 @@ const Navbar = () => {
         .then((response) => {
           const cart = response.data;
           console.log(cart);
-          console.log(load);
           dispatch(showcart(cart));
           dispatch(setLoad(false));
-          console.log(load);
         })
         .catch((err) => {
           console.log(err);
