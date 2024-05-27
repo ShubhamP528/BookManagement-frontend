@@ -8,7 +8,7 @@ const BookList = () => {
   const [books, setBooks] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { BookUser } = useAuthContext();
 
@@ -71,6 +71,7 @@ const BookList = () => {
                 <th className="py-2 px-4 text-left">Title</th>
                 <th className="py-2 px-4 text-left">Author</th>
                 <th className="py-2 px-4 text-left">Genre</th>
+                <th className="py-2 px-4 text-left">Price</th>
                 <th className="py-2 px-4 text-left">Year Published</th>
               </tr>
             </thead>
@@ -84,6 +85,7 @@ const BookList = () => {
                   <td className="py-2 px-4 border-b">{book.title}</td>
                   <td className="py-2 px-4 border-b">{book.author}</td>
                   <td className="py-2 px-4 border-b">{book.genre}</td>
+                  <td className="py-2 px-4 border-b">{book.price}</td>
                   <td className="py-2 px-4 border-b">{book.yearPublished}</td>
                 </tr>
               ))}
@@ -126,15 +128,58 @@ const BookList = () => {
 
 const Shimmer = () => {
   return (
-    <div className="animate-pulse flex space-x-4">
-      <div className="flex-1 space-y-4 py-1">
-        <div className="h-6 bg-gradient-to-r from-gray-300 to-gray-400 rounded w-3/4 animate-shimmer"></div>
-        <div className="space-y-2">
-          <div className="h-4 bg-gradient-to-r from-gray-300 to-gray-400 rounded animate-shimmer"></div>
-          <div className="h-4 bg-gradient-to-r from-gray-300 to-gray-400 rounded w-5/6 animate-shimmer"></div>
-        </div>
+    <>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+          <thead className="bg-indigo-500 text-white">
+            <tr>
+              <th className="py-2 px-4 text-left">Title</th>
+              <th className="py-2 px-4 text-left">Author</th>
+              <th className="py-2 px-4 text-left">Genre</th>
+              <th className="py-2 px-4 text-left">Price</th>
+              <th className="py-2 px-4 text-left">Year Published</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[...Array(10)].map((_, index) => (
+              <tr key={index} className="border-b border-gray-200">
+                <td className="py-4 px-6">
+                  <div className="h-4 bg-gray-200 w-64 rounded animate-pulse"></div>
+                </td>
+                <td className="py-4 px-6">
+                  <div className="h-4 bg-gray-200 w-40 rounded animate-pulse"></div>
+                </td>
+                <td className="py-4 px-6">
+                  <div className="h-4 bg-gray-200 w-32 rounded animate-pulse"></div>
+                </td>
+                <td className="py-4 px-6">
+                  <div className="h-4 bg-gray-200 w-20 rounded animate-pulse"></div>
+                </td>
+                <td className="py-4 px-6">
+                  <div className="h-4 bg-gray-200 w-24 rounded animate-pulse"></div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-    </div>
+      <div className="flex justify-center mt-4 flex-wrap gap-2">
+        <button className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50 transition duration-200 ease-in-out animate-pulse">
+          Previous
+        </button>
+        {[...Array(5)].map((_, index) => (
+          <button
+            key={index}
+            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50 transition duration-200 ease-in-out animate-pulse"
+          >
+            {index + 1}
+          </button>
+        ))}
+        <button className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50 transition duration-200 ease-in-out animate-pulse">
+          Next
+        </button>
+      </div>
+    </>
   );
 };
 

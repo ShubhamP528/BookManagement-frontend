@@ -1,16 +1,66 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../GlobleContext/AuthContext";
 import { useLogout } from "../hooks/useLogout";
+import { FaShoppingCart } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { showcart } from "../utils/cartSlice";
+import { setLoad } from "../utils/cartLoad";
 
 const Navbar = () => {
   const { logout } = useLogout();
   const [isOpen, setIsOpen] = useState(false);
   const { BookUser } = useAuthContext();
+  const [cartItemCount, setCartItemCount] = useState(0);
+  const dispatch = useDispatch();
+
+  const cartItems = useSelector((store) => store.cart.items);
+  const load = useSelector((store) => store.cartloader.loading);
+
+  // console.log(cartItems);
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      await axios
+        .get("/cart", {
+          headers: {
+            Authorization: `Bearer ${BookUser?.token}`,
+          },
+        })
+        .then((response) => {
+          const cart = response.data;
+          console.log(cart);
+          console.log(load);
+          dispatch(showcart(cart));
+          dispatch(setLoad(false));
+          console.log(load);
+        })
+        .catch((err) => {
+          console.log(err);
+          toast.error(err.message);
+          dispatch(setLoad(false));
+        });
+    };
+    if (BookUser) {
+      fetchCartItems();
+    }
+  }, [BookUser, dispatch]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  useEffect(() => {
+    let cout = 0;
+    for (let i = 0; i < cartItems.length; i++) {
+      if (cartItems[i]?.quantity > 0) {
+        cout = cout + cartItems[i].quantity;
+      }
+    }
+    setCartItemCount(cout);
+  }, [cartItems, cartItemCount]);
 
   return (
     <nav className="bg-gray-800">
@@ -84,6 +134,12 @@ const Navbar = () => {
                     >
                       Store
                     </Link>
+                    <Link
+                      to="/orders"
+                      className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    >
+                      My Orders
+                    </Link>
                   </>
                 )}
               </div>
@@ -91,9 +147,21 @@ const Navbar = () => {
             <div className="hidden sm:flex sm:items-center sm:ml-6">
               {BookUser ? (
                 <>
-                  <div className="text-gray-300   px-3 py-2 rounded-md text-sm font-medium">
-                    Welcome &nbsp; {BookUser?.username} !
+                  <div className="text-gray-300 px-3 py-2 rounded-md text-sm font-medium">
+                    Welcome, {BookUser?.username}!
                   </div>
+                  <Link
+                    to="/cart"
+                    className="relative text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  >
+                    <FaShoppingCart className="inline-block mr-2" />
+                    Cart
+                    {cartItemCount > 0 && (
+                      <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                        {cartItemCount}
+                      </span>
+                    )}
+                  </Link>
                   <button
                     onClick={logout}
                     className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -147,17 +215,34 @@ const Navbar = () => {
               >
                 Store
               </Link>
+              <Link
+                to="/orders"
+                className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+              >
+                My Orders
+              </Link>
             </>
           )}
-
+          <Link
+            to="/cart"
+            className="relative text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+          >
+            <FaShoppingCart className="inline-block mr-2" />
+            Cart
+            {cartItemCount > 0 && (
+              <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                {cartItemCount}
+              </span>
+            )}
+          </Link>
           {BookUser ? (
             <>
-              <div className="text-gray-300   px-3 py-2 rounded-md text-sm font-medium">
-                Welcome &nbsp; {BookUser?.username} !
+              <div className="text-gray-300 px-3 py-2 rounded-md text-sm font-medium">
+                Welcome, {BookUser?.username}!
               </div>
               <button
                 onClick={logout}
-                className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                className="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
               >
                 Logout
               </button>

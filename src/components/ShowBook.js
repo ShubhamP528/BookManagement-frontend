@@ -3,8 +3,11 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuthContext } from "../GlobleContext/AuthContext";
 import toast from "react-hot-toast";
+import { addItems } from "../utils/cartSlice";
+import { useDispatch } from "react-redux";
 
 const ShowBook = () => {
+  const dispatch = useDispatch();
   const { id } = useParams();
   const { BookUser } = useAuthContext();
   const [book, setBook] = useState(null);
@@ -24,7 +27,6 @@ const ShowBook = () => {
           setLoading(false);
         })
         .catch((error) => {
-          // toast.error(error.message);
           console.log(error);
           setLoading(false);
         });
@@ -47,24 +49,36 @@ const ShowBook = () => {
         }
       })
       .catch((error) => {
-        // toast.error(error.message);
         console.log(error);
         toast.error("Failed to delete the book");
       });
   };
 
+  const handleAddToCart = async () => {
+    axios
+      .post(
+        `/cart/${book?._id}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${BookUser?.token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        dispatch(addItems(book));
+        console.log("Add to cart:", book._id);
+        toast.success("Book added to cart");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Failed to add to cart");
+      });
+  };
+
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-pulse">
-          <div className="bg-gray-300 h-10 w-40 mb-4"></div>
-          <div className="bg-gray-300 h-6 w-80 mb-2"></div>
-          <div className="bg-gray-300 h-6 w-80 mb-2"></div>
-          <div className="bg-gray-300 h-6 w-80 mb-2"></div>
-          <div className="bg-gray-300 h-6 w-80 mb-2"></div>
-        </div>
-      </div>
-    );
+    return <Shimmer />;
   }
 
   return (
@@ -83,6 +97,9 @@ const ShowBook = () => {
                 <strong>Genre:</strong> {book.genre}
               </p>
               <p>
+                <strong>Price:</strong> {book.price}
+              </p>
+              <p>
                 <strong>Year Published:</strong> {book.yearPublished}
               </p>
             </div>
@@ -99,6 +116,12 @@ const ShowBook = () => {
               >
                 Delete
               </button>
+              <button
+                onClick={handleAddToCart}
+                className="bg-green-500 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-full transition duration-300 ease-in-out"
+              >
+                Add to Cart
+              </button>
             </div>
           </>
         ) : (
@@ -110,3 +133,24 @@ const ShowBook = () => {
 };
 
 export default ShowBook;
+
+const Shimmer = () => {
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="p-6 bg-white rounded-lg shadow-lg max-w-lg w-full">
+        <div className="animate-pulse">
+          <div className="h-16 bg-gray-200 w-2/3 mb-4 rounded-full"></div>
+          <div className="h-8 bg-gray-200 w-full mb-2 rounded-full"></div>
+          <div className="h-8 bg-gray-200 w-full mb-2 rounded-full"></div>
+          <div className="h-8 bg-gray-200 w-full mb-2 rounded-full"></div>
+          <div className="h-8 bg-gray-200 w-full mb-2 rounded-full"></div>
+          <div className="flex justify-center space-x-4">
+            <div className="h-8 bg-gray-200 w-2/3 mb-2 rounded-full"></div>
+            <div className="h-8 bg-gray-200 w-2/3 mb-2 rounded-full"></div>
+            <div className="h-8 bg-gray-200 w-2/3 mb-2 rounded-full"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

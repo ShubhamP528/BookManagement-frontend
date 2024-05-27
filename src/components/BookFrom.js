@@ -6,6 +6,7 @@ const BookForm = ({ book = {}, onSave }) => {
     author: "",
     genre: "",
     yearPublished: "",
+    price: "",
   });
 
   useEffect(() => {
@@ -15,6 +16,7 @@ const BookForm = ({ book = {}, onSave }) => {
         author: book.author || "",
         genre: book.genre || "",
         yearPublished: book.yearPublished || "",
+        price: book.price || "",
       });
     }
   }, [book]);
@@ -70,6 +72,19 @@ const BookForm = ({ book = {}, onSave }) => {
           type="text"
           name="genre"
           value={formData.genre}
+          onChange={handleChange}
+          className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          required
+        />
+      </div>
+      <div>
+        <label className="block mb-2 text-sm font-medium text-gray-600">
+          Price
+        </label>
+        <input
+          type="number"
+          name="price"
+          value={formData.price}
           onChange={handleChange}
           className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           required

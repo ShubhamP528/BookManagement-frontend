@@ -11,15 +11,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-@keyframes shimmer {
+/* @keyframes shimmer {
   0% {
     background-position: -1000px;
   }
   100% {
     background-position: 1000px;
   }
-}
+} */
 
-.animate-shimmer {
+/* .animate-shimmer {
   animation: shimmer 1.8s infinite linear;
-}
+} */

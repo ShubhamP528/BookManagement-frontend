@@ -14,16 +14,28 @@ import { AuthContextProvider } from "./GlobleContext/AuthContext";
 import { Toaster } from "react-hot-toast";
 import Error from "./components/Error";
 import ShowBook from "./components/ShowBook";
+import { Provider } from "react-redux";
+import store from "./utils/store";
+import CartPage from "./components/Cart";
+import PaymentSuccess from "./components/PaymentSuccess";
+import PaymentCancel from "./components/PaymentCancel";
+
+import Orders from "./components/MyOrders";
+import OrderSummary from "./components/Order";
+
+//payement
 
 const Applayout = () => {
   return (
     <>
-      <AuthContextProvider>
-        <Navbar />
-        <Outlet />
-        <Toaster />
-        <Footer />
-      </AuthContextProvider>
+      <Provider store={store}>
+        <AuthContextProvider>
+          <Navbar />
+          <Outlet />
+          <Toaster />
+          <Footer />
+        </AuthContextProvider>
+      </Provider>
     </>
   );
 };
@@ -61,6 +73,26 @@ const appRoute = createBrowserRouter([
       {
         path: "/signup",
         element: <SignupForm />,
+      },
+      {
+        path: "/cart",
+        element: <CartPage />,
+      },
+      {
+        path: "success",
+        element: <PaymentSuccess />,
+      },
+      {
+        path: "cancel",
+        element: <PaymentCancel />,
+      },
+      {
+        path: "/orders",
+        element: <Orders />,
+      },
+      {
+        path: "/orders/:orderId",
+        element: <OrderSummary />,
       },
     ],
   },

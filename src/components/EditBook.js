@@ -51,33 +51,77 @@ const EditBook = () => {
   return (
     <div className="container mx-auto p-4">
       {/* <h2 className="text-xl font-bold mb-4">Edit Book</h2> */}
-      {book ? (
-        <BookForm book={book} onSave={handleSave} />
-      ) : (
-        <>
-          <div className="animate-pulse ">
-            <div className="h-6 bg-gray-300 rounded w-32 mb-2"></div>
-            <div className="h-10 bg-gray-300 rounded mb-4"></div>
-          </div>
-          <div className="animate-pulse">
-            <div className="h-6 bg-gray-300 rounded w-32 mb-2"></div>
-            <div className="h-10 bg-gray-300 rounded mb-4"></div>
-          </div>
-          <div className="animate-pulse">
-            <div className="h-6 bg-gray-300 rounded w-32 mb-2"></div>
-            <div className="h-10 bg-gray-300 rounded mb-4"></div>
-          </div>
-          <div className="animate-pulse">
-            <div className="h-6 bg-gray-300 rounded w-32 mb-2"></div>
-            <div className="h-10 bg-gray-300 rounded mb-6"></div>
-          </div>
-          <div className="animate-pulse">
-            <div className="h-12 bg-gray-300 rounded"></div>
-          </div>
-        </>
-      )}
+      {book ? <BookForm book={book} onSave={handleSave} /> : <Shimmer />}
     </div>
   );
 };
 
 export default EditBook;
+
+const Shimmer = () => {
+  return (
+    <form className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md space-y-6">
+      <div className="animate-pulse">
+        <div className="flex justify-center mb-6">
+          <div className="w-40 h-10 bg-gray-200 rounded-md"></div>
+        </div>
+        <div className="flex flex-col mb-4">
+          <label className="mb-2 text-sm font-medium text-gray-600">
+            Title
+          </label>
+          <input
+            type="text"
+            className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-200"
+            disabled
+          />
+        </div>
+        <div className="flex flex-col mb-4">
+          <label className="mb-2 text-sm font-medium text-gray-600">
+            Author
+          </label>
+          <input
+            type="text"
+            className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-200"
+            disabled
+          />
+        </div>
+        <div className="flex flex-col mb-4">
+          <label className="mb-2 text-sm font-medium text-gray-600">
+            Genre
+          </label>
+          <input
+            type="text"
+            className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-200"
+            disabled
+          />
+        </div>
+        <div className="flex flex-col mb-4">
+          <label className="mb-2 text-sm font-medium text-gray-600">
+            Price
+          </label>
+          <input
+            type="number"
+            className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-200"
+            disabled
+          />
+        </div>
+        <div className="flex flex-col mb-4">
+          <label className="mb-2 text-sm font-medium text-gray-600">
+            Year Published
+          </label>
+          <input
+            type="number"
+            className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-200"
+            disabled
+          />
+        </div>
+        <button
+          className="w-full bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg"
+          disabled
+        >
+          Add Book
+        </button>
+      </div>
+    </form>
+  );
+};
