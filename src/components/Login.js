@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useLogin } from "../hooks/useLogin";
 
 const Login = () => {
-  const { login } = useLogin();
+  const { login, isLoadingL } = useLogin();
   const [userData, setUserData] = useState({
     email: "",
     password: "",
@@ -57,8 +57,13 @@ const Login = () => {
           </div>
           <div>
             <button
+              disabled={isLoadingL}
               type="submit"
-              className="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              className={`w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md  bg-green-600  ${
+                isLoadingL
+                  ? "bg-gray-400  cursor-not-allowed"
+                  : "bg-green-600 hover:bg-green-700 text-white"
+              }  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500`}
             >
               Log in
             </button>

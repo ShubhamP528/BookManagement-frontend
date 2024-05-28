@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector, useDispatch } from "react-redux";
 import { removeItems, clearCart } from "../utils/cartSlice";
@@ -9,13 +9,15 @@ import { useAuthContext } from "../GlobleContext/AuthContext";
 const CartPage = () => {
   const dispatch = useDispatch();
   const { BookUser } = useAuthContext();
+  const [RemoveLoading, setRemoveLoading] = useState(null);
+  const [ClearLoading, setClearLoading] = useState(null);
+  const [CheckoutLoading, setCheckoutLoading] = useState(null);
 
   const cartItems = useSelector((store) => store.cart?.items);
   const cartLoad = useSelector((store) => store.cartloader.loading);
-  console.log("cartItem", cartItems);
-  console.log(cartLoad);
 
   const handleRemoveItem = async (item) => {
+    setRemoveLoading(true);
     axios
       .put(
         `/api/cart/${item.book._id}`,
@@ -27,11 +29,13 @@ const CartPage = () => {
         }
       )
       .then((response) => {
+        setRemoveLoading(false);
         console.log(response);
         dispatch(removeItems(item));
         toast.success("Item removed from cart");
       })
       .catch((error) => {
+        setRemoveLoading(false);
         console.log(error);
         toast.error("Failed to delete the book");
       });
@@ -42,12 +46,14 @@ const CartPage = () => {
     const stripe = await loadStripe(
       "pk_test_51PIsJ3SHp2VgW0nsDmiCFnGWNsBl62z1f6g5iAHRbI7Fy882o43cZVPupGgDJMpx4FIbGhUFATu9f9qP3cJMkTRU00rANbAS0Z"
     );
-
+    setCheckoutLoading(true);
     const response = await axios.post(
       "/api/craete-checkout-session",
       { products: cartItems },
       { headers: { "Content-Type": "application/json" } }
     );
+
+    setCheckoutLoading(false);
 
     const session = response.data;
 
@@ -61,6 +67,7 @@ const CartPage = () => {
   };
 
   const handleClearCart = async () => {
+    setClearLoading(true);
     axios
       .delete("/api/cart", {
         headers: {
@@ -68,11 +75,13 @@ const CartPage = () => {
         },
       })
       .then((response) => {
+        setClearLoading(false);
         console.log(response);
         dispatch(clearCart());
         toast.success("Cart cleared");
       })
       .catch((error) => {
+        setClearLoading(false);
         console.log(error);
         toast.error("Failed to clear the cart");
       });
@@ -121,8 +130,13 @@ const CartPage = () => {
                     </td>
                     <td className="py-2 px-4 border-b">
                       <button
+                        disabled={RemoveLoading}
                         onClick={() => handleRemoveItem(item)}
-                        className="bg-red-500 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-full transition duration-300 ease-in-out"
+                        className={`${
+                          RemoveLoading
+                            ? "bg-gray-400 cursor-not-allowed "
+                            : "bg-red-500 hover:red-green-700 text-white "
+                        } font-semibold px-4 py-2 rounded-full transition duration-300 ease-in-out`}
                       >
                         Remove
                       </button>
@@ -138,14 +152,24 @@ const CartPage = () => {
             </div>
             <div className="flex space-x-4">
               <button
+                disabled={CheckoutLoading}
                 onClick={handleCheckout}
-                className="bg-green-500 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-full transition duration-300 ease-in-out"
+                className={`${
+                  CheckoutLoading
+                    ? "bg-gray-400 cursor-not-allowed "
+                    : "bg-green-500 hover:bg-green-700 text-white "
+                } font-semibold px-6 py-2 rounded-full transition duration-300 ease-in-out`}
               >
                 Proceed to Checkout
               </button>
               <button
+                disabled={ClearLoading}
                 onClick={handleClearCart}
-                className="bg-red-500 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-full transition duration-300 ease-in-out"
+                className={`${
+                  ClearLoading
+                    ? "bg-gray-400 cursor-not-allowed "
+                    : "bg-red-500 hover:bg-red-700 text-white "
+                } font-semibold px-6 py-2 rounded-full transition duration-300 ease-in-out`}
               >
                 Clear Cart
               </button>

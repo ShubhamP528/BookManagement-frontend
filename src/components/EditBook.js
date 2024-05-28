@@ -11,6 +11,7 @@ const EditBook = () => {
   const { id } = useParams();
   const [book, setBook] = useState(null);
   const { BookUser } = useAuthContext();
+  const [isLoading, setIsLoading] = useState(null);
 
   useEffect(() => {
     if (BookUser) {
@@ -29,6 +30,7 @@ const EditBook = () => {
   }, [id, BookUser]);
 
   const handleSave = (bookData) => {
+    setIsLoading(true);
     axios
       .put(`/api/books/${id}`, bookData, {
         headers: {
@@ -41,17 +43,23 @@ const EditBook = () => {
           navigate("/books");
           toast.success(response.data.title + " Updated");
         }
+        setIsLoading(false);
       })
       .catch((error) => {
         toast.error(error.message);
         console.log(error);
+        setIsLoading(false);
       });
   };
 
   return (
     <div className="container mx-auto p-4">
       {/* <h2 className="text-xl font-bold mb-4">Edit Book</h2> */}
-      {book ? <BookForm book={book} onSave={handleSave} /> : <Shimmer />}
+      {book ? (
+        <BookForm book={book} onSave={handleSave} isLoading={isLoading} />
+      ) : (
+        <Shimmer />
+      )}
     </div>
   );
 };

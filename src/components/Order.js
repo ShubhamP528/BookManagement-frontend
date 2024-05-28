@@ -8,6 +8,7 @@ const OrderSummary = () => {
   const { BookUser } = useAuthContext();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [downloadLoad, setDownloadLoad] = useState(null);
 
   useEffect(() => {
     if (BookUser?.token) {
@@ -30,6 +31,7 @@ const OrderSummary = () => {
 
   const handleDownload = async () => {
     try {
+      setDownloadLoad(true);
       const response = await axios.get(`/api/order/${orderId}/download`, {
         headers: {
           Authorization: `Bearer ${BookUser?.token}`,
@@ -44,8 +46,10 @@ const OrderSummary = () => {
       document.body.appendChild(link);
       link.click();
       link.remove();
+      setDownloadLoad(false);
     } catch (error) {
       console.error("Error downloading the file", error);
+      setDownloadLoad(false);
     }
   };
 
@@ -139,7 +143,12 @@ const OrderSummary = () => {
         </div>
         <button
           onClick={handleDownload}
-          className="mt-4 px-4 py-2 bg-indigo-500 text-white rounded-lg"
+          disabled={downloadLoad}
+          className={`mt-4 px-4 py-2 rounded-lg ${
+            downloadLoad
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-indigo-500 text-white"
+          }`}
         >
           Download PDF
         </button>

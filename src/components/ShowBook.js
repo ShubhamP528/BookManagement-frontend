@@ -13,6 +13,8 @@ const ShowBook = () => {
   const [book, setBook] = useState(null);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [dIsLoading, setDisLoading] = useState(null);
+  const [cIsLoading, setCisLoading] = useState(null);
 
   useEffect(() => {
     if (BookUser) {
@@ -34,6 +36,7 @@ const ShowBook = () => {
   }, [id, BookUser]);
 
   const handleDelete = () => {
+    setDisLoading(true);
     axios
       .delete(`/api/books/${id}`, {
         headers: {
@@ -41,6 +44,7 @@ const ShowBook = () => {
         },
       })
       .then((response) => {
+        setDisLoading(false);
         if (response.status === 200) {
           toast.success("Book deleted successfully");
           navigate("/books");
@@ -51,10 +55,13 @@ const ShowBook = () => {
       .catch((error) => {
         console.log(error);
         toast.error("Failed to delete the book");
+        setDisLoading(false);
       });
   };
+  console.log(dIsLoading);
 
   const handleAddToCart = async () => {
+    setCisLoading(true);
     axios
       .post(
         `/api/cart/${book?._id}`,
@@ -66,12 +73,14 @@ const ShowBook = () => {
         }
       )
       .then((response) => {
+        setCisLoading(false);
         console.log(response);
         dispatch(addItems(book));
         console.log("Add to cart:", book._id);
         toast.success("Book added to cart");
       })
       .catch((err) => {
+        setCisLoading(false);
         console.log(err);
         toast.error("Failed to add to cart");
       });
@@ -111,14 +120,24 @@ const ShowBook = () => {
                 Edit
               </Link>
               <button
+                disabled={dIsLoading}
                 onClick={handleDelete}
-                className="bg-red-500 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-full transition duration-300 ease-in-out"
+                className={`${
+                  dIsLoading
+                    ? "bg-gray-400 cursor-not-allowed "
+                    : "bg-red-500 hover:bg-red-700 text-white"
+                } font-semibold px-6 py-2 rounded-full transition duration-300 ease-in-out`}
               >
                 Delete
               </button>
               <button
+                disabled={cIsLoading}
                 onClick={handleAddToCart}
-                className="bg-green-500 hover:bg-green-700 text-white font-semibold px-6 py-2 rounded-full transition duration-300 ease-in-out"
+                className={`${
+                  cIsLoading
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-green-500 hover:bg-green-700 text-white "
+                } font-semibold px-6 py-2 rounded-full transition duration-300 ease-in-out`}
               >
                 Add to Cart
               </button>

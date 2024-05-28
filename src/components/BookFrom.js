@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const BookForm = ({ book = {}, onSave }) => {
+const BookForm = ({ book = {}, onSave, isLoading }) => {
   const [formData, setFormData] = useState({
     title: "",
     author: "",
@@ -25,9 +25,9 @@ const BookForm = ({ book = {}, onSave }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave(formData);
+    await onSave(formData);
   };
 
   return (
@@ -104,8 +104,13 @@ const BookForm = ({ book = {}, onSave }) => {
         />
       </div>
       <button
+        disabled={isLoading}
         type="submit"
-        className="w-full bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg transition duration-200"
+        className={`w-full ${
+          isLoading
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-indigo-500 hover:bg-indigo-600 text-white"
+        } px-4 py-2 rounded-lg transition duration-200`}
       >
         {Object.keys(book).length > 0 ? "Update Book" : "Add Book"}
       </button>

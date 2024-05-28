@@ -12,8 +12,9 @@ const HomePage = () => {
     >
       <div className="bg-white bg-opacity-75 p-8 text-center mx-4 sm:max-w-md md:max-w-lg lg:max-w-2xl w-full rounded-lg shadow-lg">
         <h1 className="text-3xl md:text-5xl font-bold text-gray-900 mb-6">
-          Welcome to{" "}
-          <span className="text-indigo-600">Book Management App</span>
+          <span className="text-indigo-600">
+            Welcome to Book Management App
+          </span>
         </h1>
         <p className="mb-6 text-base md:text-lg text-gray-700">
           Manage your book collection easily. Add, view, edit, and delete books.

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useSignup } from "../hooks/useSignup";
 
 const SignupForm = () => {
-  const { signup } = useSignup();
+  const { signup, isLoading } = useSignup();
   const [userData, setUserData] = useState({
     email: "",
     username: "",
@@ -75,8 +75,13 @@ const SignupForm = () => {
           </div>
           <div>
             <button
+              disabled={isLoading}
               type="submit"
-              className="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              className={`w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md  bg-green-600  ${
+                isLoading
+                  ? "bg-gray-400  cursor-not-allowed"
+                  : "bg-green-600 hover:bg-green-700 text-white"
+              }  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500`}
             >
               Sign up
             </button>
