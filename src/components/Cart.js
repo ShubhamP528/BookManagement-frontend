@@ -41,6 +41,8 @@ const CartPage = () => {
       });
   };
 
+  console.log("cart items ", cartItems);
+
   const handleCheckout = async () => {
     toast.success("Proceeding to checkout...");
     const stripe = await loadStripe(
@@ -48,7 +50,7 @@ const CartPage = () => {
     );
     setCheckoutLoading(true);
     const response = await axios.post(
-      "/api/craete-checkout-session",
+      "/api/create-checkout-session",
       { products: cartItems },
       {
         headers: {
@@ -68,6 +70,7 @@ const CartPage = () => {
 
     if (result.error) {
       console.log(result.error);
+      setCheckoutLoading(false);
     }
   };
 
