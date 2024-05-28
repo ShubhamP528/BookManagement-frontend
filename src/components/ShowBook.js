@@ -58,7 +58,6 @@ const ShowBook = () => {
         setDisLoading(false);
       });
   };
-  console.log(dIsLoading);
 
   const handleAddToCart = async () => {
     setCisLoading(true);
@@ -74,9 +73,7 @@ const ShowBook = () => {
       )
       .then((response) => {
         setCisLoading(false);
-        console.log(response);
         dispatch(addItems(book));
-        console.log("Add to cart:", book._id);
         toast.success("Book added to cart");
       })
       .catch((err) => {

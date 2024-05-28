@@ -50,7 +50,12 @@ const CartPage = () => {
     const response = await axios.post(
       "/api/craete-checkout-session",
       { products: cartItems },
-      { headers: { "Content-Type": "application/json" } }
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${BookUser?.token}`,
+        },
+      }
     );
 
     setCheckoutLoading(false);

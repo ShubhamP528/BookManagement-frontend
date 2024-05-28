@@ -17,7 +17,6 @@ const BookList = () => {
       if (BookUser?.token) {
         setLoading(true);
         setError(null);
-        console.log("Fetching books with token:", BookUser.token);
         try {
           const response = await axios.get(
             `/api/books?page=${currentPage}&limit=10`,

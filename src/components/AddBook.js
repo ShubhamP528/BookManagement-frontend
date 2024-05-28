@@ -18,7 +18,6 @@ const AddBook = () => {
         },
       })
       .then((response) => {
-        console.log(response);
         if (response.status === 201) {
           navigate("/books");
           toast.success(response.data.title + " Added");
