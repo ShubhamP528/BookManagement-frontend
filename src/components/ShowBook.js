@@ -94,6 +94,26 @@ const ShowBook = () => {
     setCheckoutLoading(true);
 
     try {
+      axios
+        .post(
+          `/api/cart/${book?._id}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${BookUser?.token}`,
+            },
+          }
+        )
+        .then((response) => {
+          // dispatch(addItems(book));
+          // toast.success("Book added to cart");
+        })
+        .catch((err) => {
+          // setCisLoading(false);
+          // console.log(err);
+          // toast.error("Failed to add to cart");
+        });
+
       const response = await axios.post(
         "/api/create-checkout-session",
         { products: [{ book: book, quantity: 1 }] },
