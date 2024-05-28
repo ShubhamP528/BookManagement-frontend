@@ -60,69 +60,69 @@ const BookList = () => {
       {error && <div className="text-red-500 mb-4 text-center">{error}</div>}
       {loading ? (
         <div className="space-y-4">
-          {[...Array(1)].map((_, index) => (
-            <Shimmer key={index} />
-          ))}
+          <Shimmer />
         </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-            <thead className="bg-indigo-500 text-white">
-              <tr>
-                <th className="py-2 px-4 text-left">Title</th>
-                <th className="py-2 px-4 text-left">Author</th>
-                <th className="py-2 px-4 text-left">Genre</th>
-                <th className="py-2 px-4 text-left">Price</th>
-                <th className="py-2 px-4 text-left">Year Published</th>
-              </tr>
-            </thead>
-            <tbody>
-              {books.map((book) => (
-                <tr
-                  key={book._id}
-                  className="hover:bg-indigo-100 transition duration-200 ease-in-out cursor-pointer"
-                  onClick={() => navigate(`/books/${book._id}`)}
-                >
-                  <td className="py-2 px-4 border-b">{book.title}</td>
-                  <td className="py-2 px-4 border-b">{book.author}</td>
-                  <td className="py-2 px-4 border-b">{book.genre}</td>
-                  <td className="py-2 px-4 border-b">{book.price}</td>
-                  <td className="py-2 px-4 border-b">{book.yearPublished}</td>
+        <>
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+              <thead className="bg-indigo-500 text-white">
+                <tr>
+                  <th className="py-2 px-4 text-left">Title</th>
+                  <th className="py-2 px-4 text-left">Author</th>
+                  <th className="py-2 px-4 text-left">Genre</th>
+                  <th className="py-2 px-4 text-left">Price</th>
+                  <th className="py-2 px-4 text-left">Year Published</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {books.map((book) => (
+                  <tr
+                    key={book._id}
+                    className="hover:bg-indigo-100 transition duration-200 ease-in-out cursor-pointer"
+                    onClick={() => navigate(`/books/${book._id}`)}
+                  >
+                    <td className="py-2 px-4 border-b">{book.title}</td>
+                    <td className="py-2 px-4 border-b">{book.author}</td>
+                    <td className="py-2 px-4 border-b">{book.genre}</td>
+                    <td className="py-2 px-4 border-b">{book.price}</td>
+                    <td className="py-2 px-4 border-b">{book.yearPublished}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="flex justify-center mt-4 flex-wrap gap-2">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50 transition duration-200 ease-in-out"
+            >
+              Previous
+            </button>
+            {[...Array(totalPages).keys()].map((page) => (
+              <button
+                key={page + 1}
+                onClick={() => handlePageChange(page + 1)}
+                className={`px-4 py-2 rounded transition duration-200 ease-in-out ${
+                  page + 1 === currentPage
+                    ? "bg-indigo-500 text-white"
+                    : "bg-gray-300 hover:bg-gray-400"
+                }`}
+              >
+                {page + 1}
+              </button>
+            ))}
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50 transition duration-200 ease-in-out"
+            >
+              Next
+            </button>
+          </div>
+        </>
       )}
-      <div className="flex justify-center mt-4 flex-wrap gap-2">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50 transition duration-200 ease-in-out"
-        >
-          Previous
-        </button>
-        {[...Array(totalPages).keys()].map((page) => (
-          <button
-            key={page + 1}
-            onClick={() => handlePageChange(page + 1)}
-            className={`px-4 py-2 rounded transition duration-200 ease-in-out ${
-              page + 1 === currentPage
-                ? "bg-indigo-500 text-white"
-                : "bg-gray-300 hover:bg-gray-400"
-            }`}
-          >
-            {page + 1}
-          </button>
-        ))}
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50 transition duration-200 ease-in-out"
-        >
-          Next
-        </button>
-      </div>
     </div>
   );
 };
@@ -145,19 +145,19 @@ const Shimmer = () => {
             {[...Array(10)].map((_, index) => (
               <tr key={index} className="border-b border-gray-200">
                 <td className="py-4 px-6">
-                  <div className="h-4 bg-gray-200 w-64 rounded animate-pulse"></div>
+                  <div className="h-2 bg-gray-200 w-64 rounded animate-pulse"></div>
                 </td>
                 <td className="py-4 px-6">
-                  <div className="h-4 bg-gray-200 w-40 rounded animate-pulse"></div>
+                  <div className="h-2 bg-gray-200 w-40 rounded animate-pulse"></div>
                 </td>
                 <td className="py-4 px-6">
-                  <div className="h-4 bg-gray-200 w-32 rounded animate-pulse"></div>
+                  <div className="h-2 bg-gray-200 w-32 rounded animate-pulse"></div>
                 </td>
                 <td className="py-4 px-6">
-                  <div className="h-4 bg-gray-200 w-20 rounded animate-pulse"></div>
+                  <div className="h-2 bg-gray-200 w-20 rounded animate-pulse"></div>
                 </td>
                 <td className="py-4 px-6">
-                  <div className="h-4 bg-gray-200 w-24 rounded animate-pulse"></div>
+                  <div className="h-2 bg-gray-200 w-24 rounded animate-pulse"></div>
                 </td>
               </tr>
             ))}
